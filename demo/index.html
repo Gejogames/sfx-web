@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>sfx-web demo</title>
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        background: #141712;
+        color: #f2f0e8;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+      }
+      .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; max-width: 420px; }
+      button {
+        padding: 14px 8px; border-radius: 10px; border: 1px solid #2c3325;
+        background: #1e231a; color: #f2f0e8; font-size: 14px; cursor: pointer;
+      }
+      button:hover { border-color: #7fbf5a; }
+      label { grid-column: 1 / -1; text-align: center; margin-top: 8px; color: #a8a494; }
+    </style>
+  </head>
+  <body>
+    <div class="grid">
+      <button data-s="blip">blip</button>
+      <button data-s="confirm">confirm</button>
+      <button data-s="coin">coin</button>
+      <button data-s="success">success</button>
+      <button data-s="error">error</button>
+      <button data-s="thud">thud</button>
+      <button data-s="whoosh">whoosh</button>
+      <button data-s="launch">launch</button>
+      <button data-s="tick">tick</button>
+      <button data-s="start">start</button>
+      <button data-s="over">game over</button>
+      <button data-s="custom">custom</button>
+      <label><input type="checkbox" id="mute" /> muted (persists)</label>
+    </div>
+    <script type="module">
+      import { sfx } from "../sfx.js"
+      document.querySelectorAll("button").forEach((b) =>
+        b.addEventListener("click", () => {
+          if (b.dataset.s === "custom")
+            sfx.custom([[700, 0.06, "square"], [940, 0.06, "square", 0.05, 0.06], [1180, 0.09, "square", 0.05, 0.12]])
+          else sfx[b.dataset.s]()
+        })
+      )
+      const mute = document.getElementById("mute")
+      mute.checked = sfx.muted
+      mute.addEventListener("change", () => (sfx.muted = mute.checked))
+    </script>
+  </body>
+</html>
